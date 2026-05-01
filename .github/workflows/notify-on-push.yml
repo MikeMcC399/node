@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 name: Notify on Push
 permissions:
@@ -45,17 +46,17 @@ jobs:
         id: commit-check
         env:
           COMMITS: ${{ toJSON(github.event.commits) }}
-      - name: Slack Notification
-        if: ${{ failure() && steps.commit-check.conclusion == 'failure' && github.repository == 'nodejs/node' }}
-        uses: rtCamp/action-slack-notify@e31e87e03dd19038e411e38ae27cbad084a90661  # 2.3.3
-        env:
-          SLACK_COLOR: '#DE512A'
-          SLACK_ICON: https://github.com/nodejs.png?size=48
-          SLACK_TITLE: Invalid commit was pushed to ${{ github.ref }}
-          SLACK_MESSAGE: |
-            <!here> A commit with an invalid message was pushed to <https://github.com/${{ github.repository }}/tree/${{ github.ref_name }}|${{ github.repository }}@${{ github.ref_name }}> by <https://github.com/${{ github.actor }}|${{ github.actor }}>.
+      # - name: Slack Notification
+      #   if: ${{ failure() && steps.commit-check.conclusion == 'failure' && github.repository == 'nodejs/node' }}
+      #   uses: rtCamp/action-slack-notify@e31e87e03dd19038e411e38ae27cbad084a90661  # 2.3.3
+      #   env:
+      #     SLACK_COLOR: '#DE512A'
+      #     SLACK_ICON: https://github.com/nodejs.png?size=48
+      #     SLACK_TITLE: Invalid commit was pushed to ${{ github.ref }}
+      #     SLACK_MESSAGE: |
+      #       <!here> A commit with an invalid message was pushed to <https://github.com/${{ github.repository }}/tree/${{ github.ref_name }}|${{ github.repository }}@${{ github.ref_name }}> by <https://github.com/${{ github.actor }}|${{ github.actor }}>.
 
-            Before: <https://github.com/${{ github.repository }}/commit/${{ github.event.before }}|${{ github.event.before }}>
-            After: <https://github.com/${{ github.repository }}/commit/${{ github.event.after }}|${{ github.event.after }}>
-          SLACK_USERNAME: nodejs-bot
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      #       Before: <https://github.com/${{ github.repository }}/commit/${{ github.event.before }}|${{ github.event.before }}>
+      #       After: <https://github.com/${{ github.repository }}/commit/${{ github.event.after }}|${{ github.event.after }}>
+      #     SLACK_USERNAME: nodejs-bot
+      #     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
