@@ -113,7 +113,8 @@ on:
       - .**
       - '!.github/workflows/test-shared.yml'
       - '!.github/workflows/build-shared.yml'
-
+  workflow_dispatch:
+  
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
